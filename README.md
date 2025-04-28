@@ -9,7 +9,7 @@ Bilder sind Hier https://github.com/Arduinoeinsteiger/HPEproliantGen8GruubUSBFIX
 - Debian 12 Installationsmedium
 - HPE ProLiant Server
 
-### 📋 Installationsanleitung für Anfänger
+### 📋 Installationsanleitung
 
 #### 1. Backup-System auf USB erstellen
 1. Stecken Sie den USB-Stick in Ihren Computer
