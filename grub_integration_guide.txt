@@ -1,0 +1,71 @@
+# GRUB Bootloader Integration Guide für HPE ProLiant Server
+
+# Umgebungsvariablen für GRUB
+export GRUB_DEFAULT=0
+export GRUB_TIMEOUT=5
+export GRUB_DISTRIBUTOR="$(lsb_release -i -s 2>/dev/null || echo Debian)"
+export GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+export GRUB_CMDLINE_LINUX=""
+
+# Projektstruktur:
+# - grub/                  # Hauptverzeichnis der GRUB-Installation
+#   ├── i386-pc/          # x86-spezifische Module
+#   ├── locale/           # Lokalisierungsdateien
+#   ├── fonts/            # Schriftarten
+#   ├── grubenv           # GRUB-Umgebungsvariablen
+#   └── unicode.pf2       # Unicode-Schriftart
+
+# Installationsprozess für Backup-System:
+# 1. Erste Installation (Backup-System):
+#    - Booten Sie von Debian 12 Installationsmedium
+#    - Wählen Sie USB-Stick/USB-Festplatte/SD-Karte als Installationsziel
+#    - Installieren Sie Debian 12 inklusive Bootloader auf dem USB-Medium
+#    - Dies wird Ihr Backup-System, das immer funktioniert
+
+# 2. Zweite Installation (Hauptsystem):
+#    - Booten Sie erneut vom Installationsmedium
+#    - Wählen Sie interne SATA-Platte als Installationsziel
+#    - Installieren Sie Debian 12 OHNE Bootloader
+#    - Neustarten des Systems
+
+# 3. GRUB-Konfiguration:
+#    - Das System wird von USB booten
+#    - Führen Sie das Skript update_grub_backup.sh mit Root-Rechten aus:
+#      sudo ./update_grub_backup.sh
+#    - Bestätigen Sie die Warnung mit 'j'
+#    - Das Skript wird:
+#      * Die SATA-Installation finden
+#      * Die GRUB-Konfiguration aktualisieren
+#      * Die SATA-Installation als Standard-Boot-Option setzen
+#    - Nach dem Neustart wird das System von SATA booten
+
+# Wichtige Hinweise für HPE Server:
+# - Die Kernel-Dateien (vmlinuz, initrd.img, System.map, config) sind bereits im Projekt enthalten
+# - Stellen Sie sicher, dass der USB-Stick als erstes Boot-Gerät im BIOS konfiguriert ist
+# - Überprüfen Sie die Boot-Reihenfolge im HPE BIOS (F9 beim Start)
+# - Bei Problemen mit SATA-Boot: Deaktivieren Sie temporär die SATA-Controller im BIOS
+# - Die GRUB-Konfiguration wird nach dem Ausführen von update-grub automatisch aktualisiert
+
+# Sicherheitshinweise:
+# - Führen Sie das Skript IMMER mit sudo aus
+# - Lesen Sie die Warnungen sorgfältig durch
+# - Es wird automatisch ein Backup erstellt
+# - Bei Problemen können Sie das Backup wiederherstellen
+# - Die grubenv-Datei sollte nicht manuell bearbeitet werden
+
+# Debian 12 Kompatibilität:
+# - Diese GRUB-Konfiguration wurde speziell für Debian 12 (Bookworm) optimiert
+# - Vollständige Kompatibilität mit Debian 12 Kernel 6.1.0
+# - Unterstützt alle Debian 12 Standard-Features und -Treiber
+# - Getestet mit Debian 12 auf HPE ProLiant Gen8 und neueren Servern
+# - Optimierte Performance für Debian 12 Systeme
+
+# Debugging-Tipps:
+# - Überprüfen Sie die Boot-Logs mit: dmesg | grep -i boot
+# - Testen Sie die SATA-Erkennung mit: lsblk
+# - Überprüfen Sie die GRUB-Konfiguration mit: grub-mkconfig -o /boot/grub/grub.cfg
+
+# Debugging-Tipps:
+# - Überprüfen Sie die Boot-Logs mit: dmesg | grep -i boot
+# - Testen Sie die SATA-Erkennung mit: lsblk
+# - Überprüfen Sie die GRUB-Konfiguration mit: grub-mkconfig -o /boot/grub/grub.cfg 
