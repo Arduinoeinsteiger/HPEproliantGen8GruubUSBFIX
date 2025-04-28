@@ -3,20 +3,40 @@
  |    HPE ProLiant Gen8 Server - GRUB Bootloader Fix       |
  |    ==============================================       |
  |                                                         |
+ |    Installationsablauf:                                 |
+ |                                                         |
+ |    1. USB-Installation (Backup-System)                  |
  |    +------------------------------------------------+   |
  |    |                                                |   |
- |    |    ████████████████████████████████████████    |   |
- |    |    ██                                    ██    |   |
- |    |    ██  ████  ████  ████  ████  ████  ██  ██    |   |
- |    |    ██  ████  ████  ████  ████  ████  ██  ██    |   |
- |    |    ██                                    ██    |   |
- |    |    ████████████████████████████████████████    |   |
- |    |                                                |   |
- |    |    [USB]  [SATA]  [NETWORK]  [POWER]          |   |
+ |    |    [USB-Stick]                                 |   |
+ |    |    +----------------------------------------+  |   |
+ |    |    | Debian 12 + Bootloader                |  |   |
+ |    |    | [============= 100% ================] |  |   |
+ |    |    +----------------------------------------+  |   |
  |    |                                                |   |
  |    +------------------------------------------------+   |
  |                                                         |
- |    Debian 12 Bootloader Fix für USB/SATA Boot          |
+ |    2. SATA-Installation (Hauptsystem)                   |
+ |    +------------------------------------------------+   |
+ |    |                                                |   |
+ |    |    [SATA-Platte]                               |   |
+ |    |    +----------------------------------------+  |   |
+ |    |    | Debian 12 ohne Bootloader              |  |   |
+ |    |    | [============= 100% ================] |  |   |
+ |    |    +----------------------------------------+  |   |
+ |    |                                                |   |
+ |    +------------------------------------------------+   |
+ |                                                         |
+ |    3. GRUB-Konfiguration                               |
+ |    +------------------------------------------------+   |
+ |    |                                                |   |
+ |    |    [GRUB Bootloader]                           |   |
+ |    |    +----------------------------------------+  |   |
+ |    |    | USB -> SATA Boot-Umleitung            |  |   |
+ |    |    | [============= 100% ================] |  |   |
+ |    |    +----------------------------------------+  |   |
+ |    |                                                |   |
+ |    +------------------------------------------------+   |
  |                                                         |
  \________________________________________________________/
         \___________________________________/
@@ -31,24 +51,53 @@
 
 # HPE ProLiant Gen8 Server - GRUB Bootloader Fix
 
-Dieses Projekt enthält Skripte und Konfigurationen zur Behebung von Boot-Problemen auf HPE ProLiant Servern, insbesondere für das Booten von SATA-Laufwerken.
+## 🚀 Einfache Installation - Schritt für Schritt
 
-## Funktionen
+### Was Sie brauchen:
+- Einen USB-Stick (mindestens 8GB)
+- Debian 12 Installationsmedium
+- HPE ProLiant Server
 
-- Automatische Erkennung von SATA-Installationen
-- GRUB-Konfigurationsupdate
-- Backup-System auf USB
-- Debian 12 Kompatibilität
+### 📋 Installationsanleitung für Anfänger
 
-## Installation
+#### 1. Backup-System auf USB erstellen
+1. Stecken Sie den USB-Stick in Ihren Computer
+2. Starten Sie den Debian 12 Installer
+3. Folgen Sie den Anweisungen auf dem Bildschirm
+4. Wählen Sie den USB-Stick als Installationsziel
+5. Warten Sie, bis die Installation abgeschlossen ist
 
-Folgen Sie der Anleitung in `grub_integration_guide.txt` für die detaillierte Installationsprozedur.
+#### 2. Hauptsystem auf SATA installieren
+1. Starten Sie den Debian 12 Installer erneut
+2. Wählen Sie die interne SATA-Platte als Ziel
+3. Wichtig: Wählen Sie "Ohne Bootloader installieren"
+4. Warten Sie, bis die Installation abgeschlossen ist
 
-## Sicherheit
+#### 3. GRUB-Konfiguration
+1. Starten Sie den Server vom USB-Stick
+2. Öffnen Sie das Terminal (Tastenkombination: Strg+Alt+T)
+3. Kopieren Sie diesen Befehl und drücken Sie Enter:
+   ```bash
+   sudo ./update_grub_backup.sh
+   ```
+4. Geben Sie Ihr Passwort ein, wenn Sie dazu aufgefordert werden
+5. Bestätigen Sie die Warnung mit 'j'
+6. Warten Sie, bis der Vorgang abgeschlossen ist
 
-- Alle Skripte müssen mit Root-Rechten ausgeführt werden
-- Automatische Backup-Erstellung
-- Bestätigungsaufforderung vor Änderungen
+### 🔍 Was passiert?
+- Das Skript erstellt automatisch Backups
+- Es findet die SATA-Installation
+- Es richtet die Boot-Umleitung ein
+- Nach dem Neustart bootet der Server von SATA
+
+### ⚠️ Wichtige Hinweise
+- Alle Schritte sind sicher und können rückgängig gemacht werden
+- Es werden automatisch Backups erstellt
+- Bei Problemen können Sie immer vom USB-Stick booten
+
+### ❓ Hilfe benötigt?
+- Schauen Sie in die detaillierte Anleitung: `grub_integration_guide.txt`
+- Bei Fragen können Sie ein Issue auf GitHub erstellen
 
 ## Lizenz
 
